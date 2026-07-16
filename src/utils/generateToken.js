@@ -1,10 +1,16 @@
 const jwt = require("jsonwebtoken");
 
+const SECRET = "ApplicationToken2026";
+
 const token = jwt.sign(
     {
-        app: "Library API"
+        app: "library-api"
     },
-    "LibraryAPI2026"
+    SECRET,
+    {
+        noTimestamp: true
+    }
 );
 
+console.log("\nApplication Token:\n");
 console.log(token);

@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./src/config/db");
-const verifyToken = require("./src/middlewares/authMiddleware");
+const verifyAppToken = require("./src/middlewares/authMiddleware");
 
 const bookRoutes = require("./src/routes/bookRoutes");
 const userRoutes = require("./src/routes/userRoutes");
@@ -30,13 +30,13 @@ app.get("/", (req, res) => {
 });
 
 // Rutas protegidas
-app.use("/api/users", verifyToken, userRoutes);
-app.use("/api/books", verifyToken, bookRoutes);
-app.use("/api/carts", verifyToken, cartRoutes);
-app.use("/api/orders", verifyToken, orderRoutes);
-app.use("/api/payments", verifyToken, paymentRoutes);
-app.use("/api/premiumplans", verifyToken, premiumPlanRoutes);
-app.use("/api/reports", verifyToken, financialReportRoutes);
+app.use("/api/users", verifyAppToken, userRoutes);
+app.use("/api/books", verifyAppToken, bookRoutes);
+app.use("/api/carts", verifyAppToken, cartRoutes);
+app.use("/api/orders", verifyAppToken, orderRoutes);
+app.use("/api/payments", verifyAppToken, paymentRoutes);
+app.use("/api/premiumplans", verifyAppToken, premiumPlanRoutes);
+app.use("/api/reports", verifyAppToken, financialReportRoutes);
 
 // Solo iniciar el servidor en desarrollo
 if (process.env.NODE_ENV !== "production") {
