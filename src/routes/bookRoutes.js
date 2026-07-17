@@ -10,7 +10,15 @@ const {
 } = require("../controllers/bookController");
 
 router.post("/", createBook);
-router.get("/", getBooks);
+router.get(
+    "/",
+    (req, res, next) => {
+        return res.status(401).json({
+            message: "Middleware desde bookRoutes"
+        });
+    },
+    getBooks
+);
 router.get("/:id", getBookById);
 router.put("/:id", updateBook);
 router.delete("/:id", deleteBook);
