@@ -31,6 +31,12 @@ app.get("/", (req, res) => {
 
 console.log("Middleware cargado correctamente");
 // Rutas protegidas
+app.use("/api/books", (req, res, next) => {
+    console.log("ENTRÓ AL MIDDLEWARE DE PRUEBA");
+    return res.status(401).json({
+        message: "Middleware de prueba funcionando"
+    });
+});
 app.use("/api/users", verifyAppToken, userRoutes);
 app.use("/api/books", verifyAppToken, bookRoutes);
 app.use("/api/carts", verifyAppToken, cartRoutes);
