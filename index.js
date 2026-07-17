@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
     });
 });
 
+console.log("Middleware cargado correctamente");
 // Rutas protegidas
 app.use("/api/users", verifyAppToken, userRoutes);
 app.use("/api/books", verifyAppToken, bookRoutes);

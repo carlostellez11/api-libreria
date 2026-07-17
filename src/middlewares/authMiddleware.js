@@ -1,4 +1,5 @@
 const verifyAppToken = (req, res, next) => {
+     console.log("ENTRÓ AL MIDDLEWARE");
     const appToken = req.headers["app-token"];
 
     if (!appToken) {
