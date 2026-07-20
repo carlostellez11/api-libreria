@@ -15,13 +15,10 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 
-// Conectar a MongoDB
 connectDB();
 
-// Ruta principal (pública)
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
@@ -29,14 +26,6 @@ app.get("/", (req, res) => {
     });
 });
 
-console.log("Middleware cargado correctamente");
-// Rutas protegidas
-app.use("/api/books", (req, res, next) => {
-    console.log("ENTRÓ AL MIDDLEWARE DE PRUEBA");
-    return res.status(401).json({
-        message: "Middleware de prueba funcionando"
-    });
-});
 app.use("/api/users", verifyAppToken, userRoutes);
 app.use("/api/books", verifyAppToken, bookRoutes);
 app.use("/api/carts", verifyAppToken, cartRoutes);
@@ -45,14 +34,8 @@ app.use("/api/payments", verifyAppToken, paymentRoutes);
 app.use("/api/premiumplans", verifyAppToken, premiumPlanRoutes);
 app.use("/api/reports", verifyAppToken, financialReportRoutes);
 
-// Solo iniciar el servidor en desarrollo
-if (process.env.NODE_ENV !== "production") {
-    const PORT = process.env.PORT || 5100;
+const PORT = process.env.PORT || 5100;
 
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-}
-
-// Exportar para Vercel
-module.exports = app;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
