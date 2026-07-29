@@ -2,83 +2,108 @@ const FinancialReport = require("../models/financialReport");
 
 exports.createFinancialReport = async (req, res) => {
     try {
+
         const report = new FinancialReport(req.body);
         await report.save();
 
-        res.status(201).json({
-            message: "Financial report created successfully",
-            data: report
-        });
+        res.status(201).json(report);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error creating financial report"
+            message: "Error creating report."
         });
+
     }
 };
 
 exports.getFinancialReports = async (req, res) => {
     try {
-        const reports = await FinancialReport.find()
-            .populate("bestSellingProduct");
 
-        res.status(200).json({
-            total: reports.length,
-            data: reports
-        });
+        const reports = await FinancialReport.find();
+
+        res.status(200).json(reports);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error retrieving reports"
+            message: "Error fetching reports."
         });
+
     }
 };
 
 exports.getFinancialReportById = async (req, res) => {
     try {
+
         const report = await FinancialReport.findById(req.params.id);
 
         if (!report) {
             return res.status(404).json({
-                message: "Report not found"
+                message: "Report not found."
             });
         }
 
         res.status(200).json(report);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error retrieving report"
+            message: "Error fetching report."
         });
+
     }
 };
 
 exports.updateFinancialReport = async (req, res) => {
     try {
-        const updatedReport = await FinancialReport.findByIdAndUpdate(
+
+        const report = await FinancialReport.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidators: true }
+            {
+                new: true,
+                runValidators: true
+            }
         );
 
-        res.status(200).json({
-            message: "Financial report updated successfully",
-            data: updatedReport
-        });
+        if (!report) {
+            return res.status(404).json({
+                message: "Report not found."
+            });
+        }
+
+        res.status(200).json(report);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error updating report"
+            message: "Error updating report."
         });
+
     }
 };
 
 exports.deleteFinancialReport = async (req, res) => {
     try {
-        await FinancialReport.findByIdAndDelete(req.params.id);
+
+        const report = await FinancialReport.findByIdAndDelete(req.params.id);
+
+        if (!report) {
+            return res.status(404).json({
+                message: "Report not found."
+            });
+        }
 
         res.status(200).json({
-            message: "Financial report deleted successfully"
+            message: "Report deleted successfully."
         });
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error deleting report"
+            message: "Error deleting report."
         });
+
     }
 };

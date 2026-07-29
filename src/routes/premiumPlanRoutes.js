@@ -9,10 +9,12 @@ const {
     deletePremiumPlan
 } = require("../controllers/premiumPlanController");
 
-router.post("/", createPremiumPlan);
+const validatePremiumPlan = require("../middlewares/validatePremiumPlan");
+
+router.post("/", validatePremiumPlan, createPremiumPlan);
 router.get("/", getPremiumPlans);
 router.get("/:id", getPremiumPlanById);
-router.put("/:id", updatePremiumPlan);
+router.put("/:id", validatePremiumPlan, updatePremiumPlan);
 router.delete("/:id", deletePremiumPlan);
 
 module.exports = router;

@@ -9,10 +9,12 @@ const {
     deleteFinancialReport
 } = require("../controllers/financialReportController");
 
-router.post("/", createFinancialReport);
+const validateFinancialReport = require("../middlewares/validateFinancialReport");
+
+router.post("/", validateFinancialReport, createFinancialReport);
 router.get("/", getFinancialReports);
 router.get("/:id", getFinancialReportById);
-router.put("/:id", updateFinancialReport);
+router.put("/:id", validateFinancialReport, updateFinancialReport);
 router.delete("/:id", deleteFinancialReport);
 
 module.exports = router;

@@ -9,10 +9,12 @@ const {
     deletePayment
 } = require("../controllers/paymentController");
 
-router.post("/", createPayment);
+const validatePayment = require("../middlewares/validatePayment");
+
+router.post("/", validatePayment, createPayment);
 router.get("/", getPayments);
 router.get("/:id", getPaymentById);
-router.put("/:id", updatePayment);
+router.put("/:id", validatePayment, updatePayment);
 router.delete("/:id", deletePayment);
 
 module.exports = router;

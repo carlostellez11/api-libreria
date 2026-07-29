@@ -2,82 +2,108 @@ const PremiumPlan = require("../models/premiumPlan");
 
 exports.createPremiumPlan = async (req, res) => {
     try {
-        const premiumPlan = new PremiumPlan(req.body);
-        await premiumPlan.save();
 
-        res.status(201).json({
-            message: "Premium plan created successfully",
-            data: premiumPlan
-        });
+        const plan = new PremiumPlan(req.body);
+        await plan.save();
+
+        res.status(201).json(plan);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error creating premium plan"
+            message: "Error creating premium plan."
         });
+
     }
 };
 
 exports.getPremiumPlans = async (req, res) => {
     try {
-        const premiumPlans = await PremiumPlan.find();
 
-        res.status(200).json({
-            total: premiumPlans.length,
-            data: premiumPlans
-        });
+        const plans = await PremiumPlan.find();
+
+        res.status(200).json(plans);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error retrieving premium plans"
+            message: "Error fetching premium plans."
         });
+
     }
 };
 
 exports.getPremiumPlanById = async (req, res) => {
     try {
-        const premiumPlan = await PremiumPlan.findById(req.params.id);
 
-        if (!premiumPlan) {
+        const plan = await PremiumPlan.findById(req.params.id);
+
+        if (!plan) {
             return res.status(404).json({
-                message: "Premium plan not found"
+                message: "Premium plan not found."
             });
         }
 
-        res.status(200).json(premiumPlan);
+        res.status(200).json(plan);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error retrieving premium plan"
+            message: "Error fetching premium plan."
         });
+
     }
 };
 
 exports.updatePremiumPlan = async (req, res) => {
     try {
-        const updatedPlan = await PremiumPlan.findByIdAndUpdate(
+
+        const plan = await PremiumPlan.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidators: true }
+            {
+                new: true,
+                runValidators: true
+            }
         );
 
-        res.status(200).json({
-            message: "Premium plan updated successfully",
-            data: updatedPlan
-        });
+        if (!plan) {
+            return res.status(404).json({
+                message: "Premium plan not found."
+            });
+        }
+
+        res.status(200).json(plan);
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error updating premium plan"
+            message: "Error updating premium plan."
         });
+
     }
 };
 
 exports.deletePremiumPlan = async (req, res) => {
     try {
-        await PremiumPlan.findByIdAndDelete(req.params.id);
+
+        const plan = await PremiumPlan.findByIdAndDelete(req.params.id);
+
+        if (!plan) {
+            return res.status(404).json({
+                message: "Premium plan not found."
+            });
+        }
 
         res.status(200).json({
-            message: "Premium plan deleted successfully"
+            message: "Premium plan deleted successfully."
         });
+
     } catch (error) {
+
         res.status(500).json({
-            message: "Error deleting premium plan"
+            message: "Error deleting premium plan."
         });
+
     }
 };

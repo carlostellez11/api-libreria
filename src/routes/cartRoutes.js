@@ -9,10 +9,12 @@ const {
     deleteCart
 } = require("../controllers/cartController");
 
-router.post("/", createCart);
+const validateCart = require("../middlewares/validateCart");
+
+router.post("/", validateCart, createCart);
 router.get("/", getCarts);
 router.get("/:id", getCartById);
-router.put("/:id", updateCart);
+router.put("/:id", validateCart, updateCart);
 router.delete("/:id", deleteCart);
 
 module.exports = router;
