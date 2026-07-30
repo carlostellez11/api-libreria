@@ -19,24 +19,21 @@ exports.createPremiumPlan = async (req, res) => {
 
 exports.getPremiumPlans = async (req, res) => {
     try {
-
-        const plans = await PremiumPlan.find();
+        const plans = await PremiumPlan.find().select(
+            "_id planName price benefits durationDays"
+        );
 
         res.status(200).json(plans);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching premium plans."
-        });
-
+        res.status(500).json({ message: "Error fetching premium plans." });
     }
 };
 
 exports.getPremiumPlanById = async (req, res) => {
     try {
-
-        const plan = await PremiumPlan.findById(req.params.id);
+        const plan = await PremiumPlan.findById(req.params.id).select(
+            "_id planName price benefits durationDays"
+        );
 
         if (!plan) {
             return res.status(404).json({
@@ -45,13 +42,8 @@ exports.getPremiumPlanById = async (req, res) => {
         }
 
         res.status(200).json(plan);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching premium plan."
-        });
-
+        res.status(500).json({ message: "Error fetching premium plan." });
     }
 };
 

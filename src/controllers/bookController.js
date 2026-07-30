@@ -19,24 +19,21 @@ exports.createBook = async (req, res) => {
 
 exports.getBooks = async (req, res) => {
     try {
-
-        const books = await Book.find();
+        const books = await Book.find().select(
+            "_id title author isbn category description publisher price stock isActive"
+        );
 
         res.status(200).json(books);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching books."
-        });
-
+        res.status(500).json({ message: "Error fetching books." });
     }
 };
 
 exports.getBookById = async (req, res) => {
     try {
-
-        const book = await Book.findById(req.params.id);
+        const book = await Book.findById(req.params.id).select(
+            "_id title author isbn category description publisher price stock isActive"
+        );
 
         if (!book) {
             return res.status(404).json({
@@ -45,13 +42,8 @@ exports.getBookById = async (req, res) => {
         }
 
         res.status(200).json(book);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching book."
-        });
-
+        res.status(500).json({ message: "Error fetching book." });
     }
 };
 

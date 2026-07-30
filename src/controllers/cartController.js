@@ -19,26 +19,23 @@ exports.createCart = async (req, res) => {
 
 exports.getCarts = async (req, res) => {
     try {
-
         const carts = await Cart.find()
-            .populate("user")
-            .populate("products.product");
+            .populate("user", "_id name email")
+            .populate("products.product", "_id name")
+            .select("_id user products totalPrice");
 
         res.status(200).json(carts);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching carts."
-        });
-
+        res.status(500).json({ message: "Error fetching carts." });
     }
 };
 
 exports.getCartById = async (req, res) => {
     try {
-
-        const cart = await Cart.findById(req.params.id);
+        const cart = await Cart.findById(req.params.id)
+            .populate("user", "_id name email")
+            .populate("products.product", "_id name")
+            .select("_id user products totalPrice");
 
         if (!cart) {
             return res.status(404).json({
@@ -47,13 +44,8 @@ exports.getCartById = async (req, res) => {
         }
 
         res.status(200).json(cart);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching cart."
-        });
-
+        res.status(500).json({ message: "Error fetching cart." });
     }
 };
 

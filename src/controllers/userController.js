@@ -19,24 +19,21 @@ exports.createUser = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
     try {
-
-        const users = await User.find();
+        const users = await User.find().select(
+            "_id name email role isPremium"
+        );
 
         res.status(200).json(users);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching users."
-        });
-
+        res.status(500).json({ message: "Error fetching users." });
     }
 };
 
 exports.getUserById = async (req, res) => {
     try {
-
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).select(
+            "_id name email role isPremium"
+        );
 
         if (!user) {
             return res.status(404).json({
@@ -45,13 +42,8 @@ exports.getUserById = async (req, res) => {
         }
 
         res.status(200).json(user);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching user."
-        });
-
+        res.status(500).json({ message: "Error fetching user." });
     }
 };
 

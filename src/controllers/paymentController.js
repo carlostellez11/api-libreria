@@ -19,24 +19,21 @@ exports.createPayment = async (req, res) => {
 
 exports.getPayments = async (req, res) => {
     try {
-
-        const payments = await Payment.find();
+        const payments = await Payment.find().select(
+            "_id order paymentMethod amount paymentStatus transactionId"
+        );
 
         res.status(200).json(payments);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching payments."
-        });
-
+        res.status(500).json({ message: "Error fetching payments." });
     }
 };
 
 exports.getPaymentById = async (req, res) => {
     try {
-
-        const payment = await Payment.findById(req.params.id);
+        const payment = await Payment.findById(req.params.id).select(
+            "_id order paymentMethod amount paymentStatus transactionId"
+        );
 
         if (!payment) {
             return res.status(404).json({
@@ -45,13 +42,8 @@ exports.getPaymentById = async (req, res) => {
         }
 
         res.status(200).json(payment);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching payment."
-        });
-
+        res.status(500).json({ message: "Error fetching payment." });
     }
 };
 

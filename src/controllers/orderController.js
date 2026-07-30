@@ -19,24 +19,21 @@ exports.createOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
     try {
-
-        const orders = await Order.find();
+        const orders = await Order.find().select(
+            "_id user products totalAmount status"
+        );
 
         res.status(200).json(orders);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching orders."
-        });
-
+        res.status(500).json({ message: "Error fetching orders." });
     }
 };
 
 exports.getOrderById = async (req, res) => {
     try {
-
-        const order = await Order.findById(req.params.id);
+        const order = await Order.findById(req.params.id).select(
+            "_id user products totalAmount status"
+        );
 
         if (!order) {
             return res.status(404).json({
@@ -45,13 +42,8 @@ exports.getOrderById = async (req, res) => {
         }
 
         res.status(200).json(order);
-
     } catch (error) {
-
-        res.status(500).json({
-            message: "Error fetching order."
-        });
-
+        res.status(500).json({ message: "Error fetching order." });
     }
 };
 
